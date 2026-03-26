@@ -1,29 +1,31 @@
 #!/bin/bash
 
-echo "⚔️ [جاري تنصيب محراب السلطان Piety C1.0] ⚔️"
-echo "بإشراف: محمد الحبيب (المصمم السيادي)"
+echo "🏛️ [ جاري تهيئة مِحْراب الراعي في نظامك ] ⚔️"
 
-# 1. تحديث وتثبيت المتطلبات الأساسية
-pkg update -y && pkg upgrade -y
-pkg install python python-requests curl git -y
+# 1. تثبيت المكتبات وتجاوز حماية النظام (مهم جداً للطلبة)
+echo "📡 جاري تثبيت المكتبات..."
+pip install gspread google-auth requests --break-system-packages
 
-# 2. تنزيل Ollama (المحرك النخاعي) لإصدارات ARM64 (أندرويد)
-echo "📦 جاري استدعاء المحرك Ollama..."
-curl -L https://ollama.com/download/ollama-linux-arm64.tgz -o ollama.tgz
-tar -xzf ollama.tgz && rm ollama.tgz
-mv ollama $PREFIX/bin/
+# 2. إنشاء المسار السيادي ونقل الملفات
+echo "📂 جاري تنظيم المجلدات..."
+mkdir -p ~/piety
+cp piety_cli.py ~/piety/ 2>/dev/null
 
-# 3. جلب سكريبت Piety ووضعه في النظام
-echo "📜 جاري تحميل بروتوكول Piety..."
-curl -sL https://raw.githubusercontent.com/mohamedalhabibmaaref-beep/piety/main/piety.py -o $PREFIX/bin/piety
-chmod +x $PREFIX/bin/piety
+# 3. إعطاء صلاحيات التنفيذ لنخاع النظام
+chmod +x ~/piety/piety_cli.py
 
-# 4. إعداد المجلد السيادي
-mkdir -p ~/Sovereign_Drive
-echo "مرحباً بك في مصفوفتك الخاصة. ضع ملفاتك هنا ليحللها الراعي." > ~/Sovereign_Drive/README.txt
+# 4. تعميد الأمر 'piety' في نظام المستخدم
+# نتحقق أولاً إذا كان الأمر موجوداً لعدم التكرار
+if ! grep -q "alias piety=" ~/.bashrc; then
+    echo "alias piety='python3 ~/piety/piety_cli.py'" >> ~/.bashrc
+    echo "✅ تم إضافة الأمر piety إلى سجل النظام."
+fi
 
-echo "✅ اكتمل التثبيت يا ملك!"
-echo "------------------------------------------------"
-echo "1️⃣  افتح جلسة جديدة واكتب: ollama serve"
-echo "2️⃣  عد هنا واكتب: piety"
-echo "------------------------------------------------"
+# 5. تفعيل التغييرات فوراً في الجلسة الحالية
+source ~/.bashrc
+
+echo "--------------------------------------------------"
+echo "🏛️ تم التثبيت بنجاح يا بطل!"
+echo "⚠️  ملاحظة: إذا لم يعمل الأمر فوراً، اكتب: exec bash"
+echo "ثم ابدأ السيادة بكتابة: piety"
+echo "--------------------------------------------------"
